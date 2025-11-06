@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { initTelegram } from './app/init-telegram'
 import './index.css'
 import App from './App.tsx'
 
@@ -16,30 +17,23 @@ if (import.meta.env.DEV) {
   // })
 }
 
-// Request full-screen mode for Telegram mini app (mobile only)
-if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-  const webApp = window.Telegram.WebApp
-  const platform = webApp.platform || ''
-
-  // Check if it's a mobile platform (not desktop)
-  const isMobile = platform === 'android' || platform === 'ios'
-
-  // First expand the viewport (works on all platforms)
-  if (webApp.expand) {
-    webApp.expand()
-  }
-
-  // Request full-screen mode only on mobile devices (Bot API 8.0+)
-  if (isMobile && webApp.requestFullscreen) {
-    webApp.requestFullscreen()
-  }
-}
-
 // Enable dark mode
 document.documentElement.classList.add('light')
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Initialize Telegram Mini Apps SDK and wait for it to complete before rendering
+// This ensures safe areas are set before the app renders
+initTelegram().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}).catch((error) => {
+  console.error('Failed to initialize Telegram SDK:', error)
+  // Still render the app even if initialization fails
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+})
