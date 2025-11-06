@@ -3,6 +3,7 @@ const translations: Record<string, Record<string, string>> = {
   en: {
     'app.header.title': 'Telegram Mini App',
     'app.footer.text': 'Footer',
+    'user.info.notAvailable': 'User information not available',
   },
 }
 

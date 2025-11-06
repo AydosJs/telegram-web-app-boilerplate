@@ -1,4 +1,4 @@
-import { Button } from "@/components"
+import { UserInfo } from "@/components"
 import { useSafeArea, useIsMobile } from "@/shared/hooks"
 import { Header, Footer } from "@/widgets/layout"
 
@@ -11,8 +11,8 @@ function App() {
       {isMobile && <Header />}
 
       {/* Main content area */}
-      <main className="flex-1 container">
-        <Button>Click me</Button>
+      <main className="flex-1 container py-6 relative">
+        <UserInfo />
       </main>
 
       {isMobile && <Footer />}
